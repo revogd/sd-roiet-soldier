@@ -1,4 +1,5 @@
-import { FlatList, StyleSheet, View, ScrollView, Text } from 'react-native'
+import { FlatList, StyleSheet, View, ActivityIndicator, Text } from 'react-native'
+
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 
@@ -7,19 +8,19 @@ import Axios from 'axios';
 
 export default function Soldiers() {
   const [rows, setRows] = useState([]);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
     useEffect(() => {
         const fetchData = async () =>{
-          //setLoading(true);
+          setLoading(true);
           try {
             const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers");
             console.log(response);
             setRows(response);
-            setloading(true);
+            setLoading(true);
           } catch (error) {
             console.error(error.message);
           }
-          //setLoading(false);
+          setLoading(false);
         }
     
         fetchData();
@@ -27,11 +28,20 @@ export default function Soldiers() {
   return (
     <View>
       <Text>รายชื่อทหาร</Text>
-    <View>
-      {loading && rows.map((row) => {
-        <Text>{row.ชื่อ}</Text>
-      })}
-    </View>
+      {loading ? <ActivityIndicator size='large'/> : (
+      <FlatList
+        data={rows}
+        renderItem={({item}) => 
+        <Text style={styles.item}>{item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด}</Text>}
+        
+        //onEndReached={loadMoreData}
+        //onEndReachedThreshold ={0.1}
+        //ItemSeparatorComponent={() => <View style={styles.separator} />}
+        //ListFooterComponent={this.renderFooter.bind(this)} 
+       
+      />
+      )}
+      
     </View>
   )
 }
