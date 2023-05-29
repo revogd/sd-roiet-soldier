@@ -13,7 +13,7 @@ export default function Soldiers() {
         const fetchData = async () =>{
           setLoading(true);
           try {
-            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers");
+            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers?_limit=10");
             console.log(response);
             setRows(response);
             setLoading(true);
