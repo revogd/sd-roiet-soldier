@@ -1,22 +1,21 @@
-import { FlatList, StyleSheet, View, ActivityIndicator, Text } from 'react-native'
-
+import { FlatList, StyleSheet, View, ActivityIndicator, Text, Button, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
-
+import Search from './Search';
 
 
 
 export default function Soldiers() {
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);  
+
     useEffect(() => {
-        const fetchData = async () =>{
-          setLoading(true);
+        const fetchData = async () =>{          
           try {
             const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers");
-            console.log(response);
-            setRows(response);
-            setLoading(true);
+            
+            setRows(response);            
+            setLoading(false);
           } catch (error) {
             console.error(error.message);
           }
@@ -27,13 +26,15 @@ export default function Soldiers() {
       }, []);
   return (
     <View>
-      <Text>รายชื่อทหาร</Text>
+      <Search />       
+    <View>
       {loading ? <ActivityIndicator size='large'/> : (
-      <FlatList
+      <FlatList 
         data={rows}
-        renderItem={({item}) => 
-        <Text style={styles.item}>{item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด}</Text>}
-        
+        ItemSeparatorComponent={ItemSeparatorView}
+        renderItem={ItemView}
+        maxToRenderPerBatch={5}
+        keyExtractor={(item) => item.ID}        
         //onEndReached={loadMoreData}
         //onEndReachedThreshold ={0.1}
         //ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -43,7 +44,47 @@ export default function Soldiers() {
       )}
       
     </View>
+    </View>
   )
 }
+const ItemView = ({item}) => {
+  return (
+    // FlatList Item
+    <View>
+      <Text
+        style={styles.item}
+        onPress={() => {navigation.navigate('Detail', {id: item.ID})}}>
+          
+         {item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด} {"\n"} 
+         ตำบล {item.ตำบล} อำเภอ {item.อำเภอ}
+      </Text>
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({})
+const ItemSeparatorView = () => {
+  return (
+    //Item Separator
+    <View
+      style={{ height: 0.5, width: '100%', backgroundColor: '#C8C8C8' }}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'top',
+    justifyContent: 'top',
+    paddingTop: 30,
+  },
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: 'center',
+  },
+  item: {
+    padding: 10,
+    marginLeft: 10
+  }
+});
