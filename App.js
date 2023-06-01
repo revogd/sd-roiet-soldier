@@ -1,31 +1,22 @@
-import { StyleSheet, View } from 'react-native';
-import { Text } from '@react-native-material/core'
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Soldiers from './components/Soldiers';
-import { StatusBar } from 'expo-status-bar';
-import NavBar from './NavBar';
+import Detail from './components/Detail';
+
 
 
 export default function App() {
+  
+const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <NavBar />
-      <Text variant="h5">สำนักงานสัสดีจังหวัดร้อยเอ็ด</Text>
-      <Soldiers />
-      <StatusBar style="light" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>       
+        <Stack.Screen name="Home" component={Soldiers} options={{ title: 'Soldiers' }} />
+        <Stack.Screen name="Detail" component={Detail} />  
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'top',
-    paddingTop: 30,
-  },
-  footerContainer: {
-    flex: 1 / 3,
-    alignItems: 'center',
-  },
-});
