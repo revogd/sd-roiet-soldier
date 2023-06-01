@@ -16,6 +16,7 @@ export default function Soldiers() {
             
             setRows(response);            
             setLoading(false);
+            
           } catch (error) {
             console.error(error.message);
           }
