@@ -12,7 +12,11 @@ export default function Soldiers() {
     useEffect(() => {
         const fetchData = async () =>{          
           try {
-
+            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers?_limit=10");
+            
+            setRows(response);            
+            setLoading(false);
+            
           } catch (error) {
             console.error(error.message);
           }
