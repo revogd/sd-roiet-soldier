@@ -2,15 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 
-export default function Detail( route ) {
+export default function Soldier( route ) {
     const [item, setItem] = useState([]);
-    const [loading, setLoading] = useState(false);   
     const { id } = route.params; //Get the param */  
+    
+    console.log(id);
 
     useEffect(() => {
-        const fetchData = async () =>{          
+        const fetchData = async (id) =>{          
           try {
-            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldier${id}");
+            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldier:id=${id}");
             
             setRows(response);            
             setLoading(false);
