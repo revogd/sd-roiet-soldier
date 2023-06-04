@@ -1,19 +1,22 @@
-import { FlatList, StyleSheet, View, ActivityIndicator, Text, Button, SafeAreaView } from 'react-native'
+import { FlatList, StyleSheet, View, ActivityIndicator, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
-import Search from './Search';
+import { useNavigation } from '@react-navigation/native';
+import Search from '../components/Search';
 
 
 
-export default function Soldiers() {
+const Soldiers = ({ navigation}) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);  
+
+  
 
     useEffect(() => {
         const fetchData = async () =>{          
           try {
-            setLoading(true);
-            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers?_limit=10");
+            
+            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldiers?_start=0&_limit=25");
             
             setRows(response);            
             setLoading(false);
@@ -28,15 +31,15 @@ export default function Soldiers() {
       }, []);
   return (
     <View>
-      <Search />       
+      <Search />      
     <View>
       {loading ? <ActivityIndicator size='large'/> : (
       <FlatList 
         data={rows}
-        ItemSeparatorComponent={ItemSeparatorView}
+        ItemSeparatorComponent={ItemSeparatorView}        
         renderItem={ItemView}
         maxToRenderPerBatch={5}
-        keyExtractor={(item) => item.ID}        
+        keyExtractor={(item) => item.ID.toString()}       
         //onEndReached={loadMoreData}
         //onEndReachedThreshold ={0.1}
         //ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -49,18 +52,18 @@ export default function Soldiers() {
     </View>
   )
 }
-const ItemView = ({item}, {navigation}) => {
+
+function ItemView ({item, navigation}) { 
+
   return (
     // FlatList Item
-    <View>
-      <Text
-        style={styles.item}
-        onPress={() => {navigation.navigate('Detail', {id: item.ID})}}>
-          
-         {item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด} {"\n"} 
-         ตำบล {item.ตำบล} อำเภอ {item.อำเภอ}
+    <TouchableOpacity onPress={() => navigation.navigate('Soldier', {pid: item.ID.toString()})}>
+    
+      <Text style={styles.item}>          
+         {item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด} ตำบล {item.ตำบล}
       </Text>
-    </View>
+    
+    </TouchableOpacity>
   );
 };
 
@@ -77,8 +80,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'top',
-    justifyContent: 'top',
+    //alignItems: 'center',
+    //justifyContent: 'center',
     paddingTop: 30,
   },
   footerContainer: {
@@ -90,3 +93,4 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
+export default Soldiers;
