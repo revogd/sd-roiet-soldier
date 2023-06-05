@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">       
         <Stack.Screen name="Home" component={Soldiers} options={{ title: 'Soldiers' }} />
-        <Stack.Screen name="Soldier" component={Soldier} />  
+        <Stack.Screen name="Soldier" component={Soldier} options={({ route }) => ({ title: route.params.name })} />  
       </Stack.Navigator>
     </NavigationContainer>
   );

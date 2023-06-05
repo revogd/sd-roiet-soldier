@@ -37,7 +37,7 @@ const Soldiers = ({navigation}) => {
       <FlatList 
         data={rows}
         ItemSeparatorComponent={ItemSeparatorView}        
-        renderItem={ItemView}
+        renderItem={({item})=> <ItemView item={item}/>}
         maxToRenderPerBatch={5}
         keyExtractor={(item) => item.ID.toString()}       
         //onEndReached={loadMoreData}
@@ -53,13 +53,13 @@ const Soldiers = ({navigation}) => {
   )
 }
 
-    <Text>{item.title}</Text>
+
 function ItemView ({item}) {  
   const navigation = useNavigation();
 
   return (
     // FlatList Item
-    <TouchableOpacity onPress = {() => navigation.navigate('Soldier', {pid: item.ID.toString()})}>    
+    <TouchableOpacity onPress = {() => navigation.navigate('Soldier', {id: item.ID.toString(), name: item.ชื่อ})}>    
       <Text style={styles.item}>          
          {item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด} ตำบล {item.ตำบล}
       </Text>
