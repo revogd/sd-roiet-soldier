@@ -6,7 +6,7 @@ import Search from '../components/Search';
 
 
 
-const Soldiers = ({ navigation}) => {
+const Soldiers = ({navigation}) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);  
 
@@ -53,12 +53,13 @@ const Soldiers = ({ navigation}) => {
   )
 }
 
-function ItemView ({item, navigation}) { 
+    <Text>{item.title}</Text>
+function ItemView ({item}) {  
+  const navigation = useNavigation();
 
   return (
     // FlatList Item
-    <TouchableOpacity onPress={() => navigation.navigate('Soldier', {pid: item.ID.toString()})}>
-    
+    <TouchableOpacity onPress = {() => navigation.navigate('Soldier', {pid: item.ID.toString()})}>    
       <Text style={styles.item}>          
          {item.ชื่อ}  {item.นามสกุล}   เกิด พ.ศ.{item.เกิด} ตำบล {item.ตำบล}
       </Text>
@@ -66,6 +67,7 @@ function ItemView ({item, navigation}) {
     </TouchableOpacity>
   );
 };
+
 
 const ItemSeparatorView = () => {
   return (
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     paddingTop: 30,
   },
   footerContainer: {
