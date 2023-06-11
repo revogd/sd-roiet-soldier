@@ -12,7 +12,7 @@ export default function Soldier({route, navigation}) {
     useEffect(() => {
         const fetchData = async () =>{          
           try {
-            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldier/:id?"+id);
+            const {data: response} = await Axios.get("https://sd-roiet-api.onrender.com/soldier/" + id);
             
             setItem(response);            
             setLoading(false);
